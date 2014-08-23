@@ -1,0 +1,11 @@
+cat output | awk -F "\t" 'BEGIN{count=0} {if($1<2)count=count+1}END {printf("\nrating<2 :%s\n",count)}'
+cat output | awk -F "\t" 'BEGIN{count=0} {if($1>2&&$1<3)count=count+1}END {printf("rating[2,3] :%s\n",count)}'
+cat output | awk -F "\t" 'BEGIN{count=0} {if($1>3&&$1<4)count=count+1}END {printf("rating[3,4] :%s\n",count)}'
+cat output | awk -F "\t" 'BEGIN{count=0} {if($1>4)count=count+1}END {printf("rating[4,>] :%s\n",count)}'
+awk -F"[, ]" 'BEGIN{mse=0.0} NR==FNR{arr[FNR]=$0};NR>FNR{mse+=(arr[FNR]-$3)*(arr[FNR]-$3)} END{print "RMSE:",sqrt(mse/FNR)}' output ../ua.test
+
+python recall.py
+awk 'BEGIN{order=0;cart=0} {if($3==3)order++;if($3==2)cart++;} END{print "order:",order,"cart:",cart}' ../ua.test
+awk 'BEGIN{cnt=0} {if($3>=3)cnt++;} END{print "ua.base order:" cnt}' ../ua.base
+awk 'BEGIN{cnt=0} {if(($3>=2)&&($3<3))cnt++;} END{print "ua.base cart :" cnt}' ../ua.base
+awk 'BEGIN{cnt=0} {if($3<2)cnt++;} END{print "ua.base view :" cnt}' ../ua.base

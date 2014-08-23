@@ -1,0 +1,4 @@
+rm smalldata.te.bin smalldata.tr.bin output model convert.o
+rm result.txt
+rm userCustomer feature_*
+rm cosine.txt euclidean
